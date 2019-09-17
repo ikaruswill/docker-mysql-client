@@ -6,7 +6,12 @@ DB_NAME=${DB_NAME:-${MYSQL_ENV_DB_NAME}}
 DB_HOST=${DB_HOST:-${MYSQL_ENV_DB_HOST}}
 ALL_DATABASES=${ALL_DATABASES}
 IGNORE_DATABASE=${IGNORE_DATABASE}
+BACKUP_RETENTION=${BACKUP_RETENTION:-1}
 
+function rotate_dumps {
+	pattern=$1
+	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' rm -r
+}
 
 if [[ ${DB_USER} == "" ]]; then
 	echo "Missing DB_USER env variable"
@@ -27,12 +32,14 @@ if [[ ${ALL_DATABASES} == "" ]]; then
 		exit 1
 	fi
 	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" "$@" "${DB_NAME}" | gzip > /mysqldump/"${DB_NAME}-`date +%Y-%m-%d`".sql.gz
+	rotate_dumps $DB_NAME
 else
 	databases=`mysql --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
 for db in $databases; do
     if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]] && [[ "$db" != "$IGNORE_DATABASE" ]]; then
         echo "Dumping database: $db"
         mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" --databases $db | gzip > /mysqldump/"$db-`date +%Y-%m-%d`".sql.gz
+		rotate_dumps $db
     fi
 done
 fi
