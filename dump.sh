@@ -10,7 +10,7 @@ BACKUP_RETENTION=${BACKUP_RETENTION:-1}
 
 function rotate_dumps {
 	pattern=$1
-	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' rm -r
+	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' rm -r > /dev/null 2>&1
 }
 
 if [[ ${DB_USER} == "" ]]; then
