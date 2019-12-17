@@ -1,5 +1,6 @@
 #!/bin/bash
 
+DEBUG=${DEBUG}
 DB_USER=${DB_USER:-${MYSQL_ENV_DB_USER}}
 DB_PASS=${DB_PASS:-${MYSQL_ENV_DB_PASS}}
 DB_NAME=${DB_NAME:-${MYSQL_ENV_DB_NAME}}
@@ -9,7 +10,10 @@ IGNORE_DATABASE=${IGNORE_DATABASE}
 BACKUP_RETENTION=${BACKUP_RETENTION:-1}
 BACKUP_PATH=${BACKUP_PATH:-/mysqldump}
 
-set -x
+
+if [[ ${DEBUG} != "" ]]; then
+	set -x
+fi
 
 function rotate_dumps {
 	pattern=$1
