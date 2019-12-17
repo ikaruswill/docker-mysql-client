@@ -16,8 +16,9 @@ if [[ ${DEBUG} != "" ]]; then
 fi
 
 function rotate_dumps {
+	echo "$db: Rotating dumps"
 	pattern=$1
-	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' rm -r
+	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' -I {} sh -c 'echo "Deleting $1" && rm -r $1 >/dev/null 2>&1' sh {}
 }
 
 if [[ ${DB_USER} == "" ]]; then
