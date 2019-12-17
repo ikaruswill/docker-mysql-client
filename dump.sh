@@ -38,11 +38,11 @@ if [[ ${ALL_DATABASES} == "" ]]; then
 	rotate_dumps $DB_NAME
 else
 	databases=`mysql --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
-for db in $databases; do
-    if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]] && [[ "$db" != "$IGNORE_DATABASE" ]]; then
-        echo "Dumping database: $db"
-        mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" --databases $db | gzip > "$db-`date +%Y-%m-%d`".sql.gz
-		rotate_dumps $db
-    fi
-done
+	for db in $databases; do
+	    if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]] && [[ "$db" != "$IGNORE_DATABASE" ]]; then
+	        echo "Dumping database: $db"
+	        mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" --databases $db | gzip > "$db-`date +%Y-%m-%d`".sql.gz
+			rotate_dumps $db
+	    fi
+	done
 fi
