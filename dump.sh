@@ -9,9 +9,11 @@ IGNORE_DATABASE=${IGNORE_DATABASE}
 BACKUP_RETENTION=${BACKUP_RETENTION:-1}
 BACKUP_PATH=${BACKUP_PATH:-/mysqldump}
 
+set -x
+
 function rotate_dumps {
 	pattern=$1
-	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' rm -r > /dev/null 2>&1
+	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' rm -r
 }
 
 if [[ ${DB_USER} == "" ]]; then
