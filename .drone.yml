@@ -1,14 +1,26 @@
 kind: pipeline
-name: default
-type: docker
+name: linux-arm
+type: kubernetes
 
 platform:
   os: linux
   arch: arm
 
+clone:
+  depth: 1
+
 steps:
 - name: publish
   image: plugins/docker
+  environment:
+    PLUGIN_MTU: 1440
+  resources:
+    requests:
+      cpu: 500
+      memory: 300MiB
+    limits:
+      cpu: 1000
+      memory: 300MiB
   settings:
     repo: ikaruswill/mysql-client
     auto_tag: true
@@ -16,3 +28,24 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
+
+node_selector:
+  kubernetes.io/arch: arm
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/tags/*
+
+---
+kind: secret
+name: docker_username
+get:
+  path: drone-secrets
+  name: docker_username
+---
+kind: secret
+name: docker_password
+get:
+  path: drone-secrets
+  name: docker_password
