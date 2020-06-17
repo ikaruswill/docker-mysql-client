@@ -8,7 +8,7 @@ $ docker run --rm \
   -e DB_USER='yourdbusername' \
   -e DB_PASS='yourcomplexpassword' \
   -v $pwd/backups:/mysqldump \
-  ikaruswill/mysql-client
+  ikaruswill/mysql-backup
 ```
 
 ## Parameters
