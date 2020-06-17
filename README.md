@@ -1,4 +1,4 @@
-# docker-mysql-client
+# mysql-backup
 Simple Docker image for backing up a MySQL/MariaDB Database
 
 ## Usage
