@@ -24,6 +24,7 @@ steps:
   settings:
     repo: ikaruswill/mysql-backup
     auto_tag: true
+    auto_tag_suffix: linux-arm
     username:
       from_secret: docker_username
     password:
@@ -64,6 +65,7 @@ steps:
   settings:
     repo: ikaruswill/mysql-backup
     auto_tag: true
+    auto_tag_suffix: linux-arm64
     username:
       from_secret: docker_username
     password:
