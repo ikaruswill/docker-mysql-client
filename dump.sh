@@ -9,7 +9,7 @@ ALL_DATABASES=${ALL_DATABASES:-true}
 IGNORE_DATABASE=${IGNORE_DATABASE}
 BACKUP_RETENTION=${BACKUP_RETENTION:-7}
 BACKUP_PATH=${BACKUP_PATH:-/backups}
-
+EXTRA_ARGS=$@
 
 if [[ ${DEBUG} != "" ]]; then
 	set -x
@@ -24,7 +24,7 @@ function rotate_dumps {
 function dump_db {
 	echo "$db: Dumping database"
 	db=$1
-	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" $db | gzip > "$db-`date +%Y-%m-%d`".sql.gz
+	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" ${EXTRA_ARGS} $db | gzip > "$db-`date +%Y-%m-%d`".sql.gz
 }
 
 if [[ ${DB_USER} == "" ]]; then
@@ -42,7 +42,7 @@ fi
 
 cd $BACKUP_PATH
 
-if [[ ${ALL_DATABASES} == "" ]]; then
+if [[ ${ALL_DATABASES} != "true" ]]; then
 	if [[ ${DB_NAME} == "" ]]; then
 		echo "Missing DB_NAME env variable"
 		exit 1
