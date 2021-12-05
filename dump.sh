@@ -17,14 +17,16 @@ if [[ ${DEBUG} != "" ]]; then
 fi
 
 function rotate_dumps {
+	local db=$1
 	echo "$db: Rotating dumps"
-	pattern=$1
-	ls -t | grep $pattern | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' -I {} sh -c 'echo "Deleting $1" && rm -r $1 >/dev/null 2>&1' sh {}
+	
+	ls -t | grep $db | sed -e 1,${BACKUP_RETENTION}d | xargs -d '\n' -I {} sh -c 'echo "Deleting $1" && rm -r $1 >/dev/null 2>&1' sh {}
 }
 
 function dump_db {
+	local db=$1
 	echo "$db: Dumping database"
-	db=$1
+
 	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" \
 	--add-drop-database --single-transaction \
 	${EXTRA_ARGS} --databases $db \
