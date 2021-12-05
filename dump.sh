@@ -24,7 +24,10 @@ function rotate_dumps {
 function dump_db {
 	echo "$db: Dumping database"
 	db=$1
-	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" ${EXTRA_ARGS} --databases $db | gzip > "$db-`date +%Y-%m-%d`".sql.gz
+	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" \
+	--add-drop-database \
+	${EXTRA_ARGS} --databases $db \
+	| gzip > "$db-`date +%Y-%m-%d`".sql.gz
 }
 
 if [[ ${DB_USER} == "" ]]; then
