@@ -12,6 +12,11 @@ $ docker run --rm \
   -v $pwd/backups:/backups \
   ikaruswill/mysql-backup
 ```
+## Restore
+```
+db=[db]
+gunzip < $db-[date].sql.gz | mysql -u [yourdbusername] -p[yourdbpassword] -h [yourdbhostname] $db
+```
 
 ## Parameters
 | Parameter        | Description                                                                  |
