@@ -8,6 +8,7 @@ DB_HOST=${DB_HOST:-${MYSQL_ENV_DB_HOST}}
 ALL_DATABASES=${ALL_DATABASES:-true}
 BACKUP_RETENTION=${BACKUP_RETENTION:-7}
 BACKUP_PATH=${BACKUP_PATH:-/backups}
+BACKUP_MYSQL_DB=${BACKUP_MYSQL_DB:-true}
 EXTRA_ARGS=$@
 
 echo 'Starting mysql-backup'
@@ -63,6 +64,10 @@ else
 			rotate_dumps $db
 	    fi
 	done
+fi
+
+if [[ ${BACKUP_MYSQL_DB} == "true" ]]; then
+	dump_db 'mysql'
 fi
 
 echo 'Backup complete'

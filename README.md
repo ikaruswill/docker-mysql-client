@@ -28,4 +28,4 @@ gunzip < $db-[date].sql.gz | mysql -u [yourdbusername] -p[yourdbpassword] -h [yo
 | ALL_DATABASES    | Set 'true' to backup all databases, overrides `DB_NAME` (defaults to `true`) |
 | BACKUP_RETENTION | Number of backups to retain on rotation (defaults to `7`)                    |
 | BACKUP_PATH      | Path to backup to (defaults to `/backups`)                                   |
-
+| BACKUP_MYSQL_DB  | Backup the default `mysql` database (defaults to `true`)                     |
