@@ -10,6 +10,8 @@ BACKUP_RETENTION=${BACKUP_RETENTION:-7}
 BACKUP_PATH=${BACKUP_PATH:-/backups}
 EXTRA_ARGS=$@
 
+echo 'Starting mysql-backup'
+
 if [[ ${DEBUG} != "" ]]; then
 	set -x
 fi
@@ -60,3 +62,5 @@ else
 	    fi
 	done
 fi
+
+echo 'Backup complete'
