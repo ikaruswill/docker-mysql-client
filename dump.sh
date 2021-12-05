@@ -6,7 +6,6 @@ DB_PASS=${DB_PASS:-${MYSQL_ENV_DB_PASS}}
 DB_NAME=${DB_NAME:-${MYSQL_ENV_DB_NAME}}
 DB_HOST=${DB_HOST:-${MYSQL_ENV_DB_HOST}}
 ALL_DATABASES=${ALL_DATABASES:-true}
-IGNORE_DATABASE=${IGNORE_DATABASE}
 BACKUP_RETENTION=${BACKUP_RETENTION:-7}
 BACKUP_PATH=${BACKUP_PATH:-/backups}
 EXTRA_ARGS=$@
@@ -55,7 +54,7 @@ if [[ ${ALL_DATABASES} != "true" ]]; then
 else
 	databases=`mysql --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" -e "SHOW DATABASES;" | tr -d "| " | grep -v Database`
 	for db in $databases; do
-	    if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]] && [[ "$db" != "$IGNORE_DATABASE" ]]; then
+	    if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]]; then
 	        dump_db $db
 			rotate_dumps $db
 	    fi
