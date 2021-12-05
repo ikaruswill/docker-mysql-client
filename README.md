@@ -1,12 +1,14 @@
 # mysql-backup
 Simple Docker image for backing up a MySQL/MariaDB Database
 
-## Usage
+> ⚠️ **Only for InnoDB**: This uses `--single-transaction` for dumping which may result in inconsistent backups with other DB engines.
+
+## Backup
 ```
 $ docker run --rm \
   -e DB_HOST='yourdbhostname' \
   -e DB_USER='yourdbusername' \
-  -e DB_PASS='yourcomplexpassword' \
+  -e DB_PASS='yourdbpassword' \
   -v $pwd/backups:/backups \
   ikaruswill/mysql-backup
 ```

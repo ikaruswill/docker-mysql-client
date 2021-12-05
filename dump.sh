@@ -25,7 +25,7 @@ function dump_db {
 	echo "$db: Dumping database"
 	db=$1
 	mysqldump --user="${DB_USER}" --password="${DB_PASS}" --host="${DB_HOST}" \
-	--add-drop-database \
+	--add-drop-database --single-transaction \
 	${EXTRA_ARGS} --databases $db \
 	| gzip > "$db-`date +%Y-%m-%d`".sql.gz
 }
