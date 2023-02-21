@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
 RUN apk add --no-cache --update mysql-client gzip findutils bash
 ADD dump.sh /
